@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Movies</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Update Movie</h1>
+
+    <div class="form">
+        <form action="/update/{{movie._id}}" method="POST">
+            <input type="text" name="movie_content" id="movie_content">
+            <input type="submit" value="Update">
+        </form>
+    </div>
+</div>
+{% endblock %}
