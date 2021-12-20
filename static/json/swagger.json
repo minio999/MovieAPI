@@ -1,12 +1,171 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "description": "Basic Movie Api",
-      "version": "1.0.0",
-      "title": "Movie Api",
-      "license": {
-        "name": "MIT",
-        "url": "https://opensource.org/licenses/MIT"
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Simple Movie API",
+    "version": "1.0.0",
+    "title": "Movie API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+
+
+  "tags": [{
+    "name": "Products API",
+    "description": "Test API"
+  }],
+
+
+  "servers": [{
+    "url": "/"
+  }],
+
+
+  "components": {
+    "schemas": {
+      "MovieAPI": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+
+
+
+  "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "Add movie to API"
+        ],
+        "summary": "Add movie",
+        "requestBody": {
+          "description": "Post New Movie To Database",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieAPI"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/MovieAPI"
+            }
+          },
+          "404": {
+            "description": "NOT FOUND",
+            "schema": {
+              "$ref": "#/components/schemas/MovieAPI"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Get All movies from API"
+        ],
+        "summary": "Get All movies",
+
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/MovieAPI"
+            }
+          },
+          "404": {
+            "description": "NOT FOUND",
+            "schema": {
+              "$ref": "#/components/schemas/MovieAPI"
+            }
+          }
+        }
+      },
+      "/update/{id}": {
+        "put": {
+          "tags": [
+            "Update movies on API"
+          ],
+          "parameters": [{
+            "name": "id",
+            "in": "path",
+            "description": "todo id to update",
+            "required": true,
+            "type": "integer",
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }],
+          "summary": "Update Todo",
+          "requestBody": {
+            "description": "Update Existing todo On Database",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieAPI"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/MovieAPI"
+              }
+            },
+            "404": {
+              "description": "NOT FOUND",
+              "schema": {
+                "$ref": "#/components/schemas/MovieAPI"
+              }
+            }
+          }
+        }
+      },
+
+      "delete": {
+        "tags": [
+          "Delete todo to API"
+        ],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "description": "product id to delete",
+          "required": true,
+          "type": "integer",
+          "schema": {
+            "$ref": "#/components/schemas/Id"
+          }
+        }],
+        "summary": "Delete todo",
+
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/TodoList"
+            }
+          },
+          "404": {
+            "description": "NOT FOUND",
+            "schema": {
+              "$ref": "#/components/schemas/TodoList"
+            }
+          }
+        }
       }
     }
   }
+}
