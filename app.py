@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect
 import pymongo
 from bson.objectid import ObjectId
-
+from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
 
@@ -12,6 +12,18 @@ try:
 except: 
     print("ERROR - Cannot connect to db")
 
+
+SWAGGER_URL = '/swagger'
+API_URL = '/static/json/swagger.json'
+SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config = {
+        'app_name' : 'Movie Api'
+    }
+)
+
+app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix = SWAGGER_URL)
 
 @app.route("/", methods=["POST", "GET"])
 def mainpage():
