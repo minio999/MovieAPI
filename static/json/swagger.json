@@ -1,0 +1,12 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "Basic Movie Api",
+      "version": "1.0.0",
+      "title": "Movie Api",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    }
+}
