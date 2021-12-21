@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, Response
+from flask import Flask, request, Response
 import pymongo
 from bson.objectid import ObjectId
 from flask_swagger_ui import get_swaggerui_blueprint
