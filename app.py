@@ -34,10 +34,10 @@ def addMovies():
     try:
         movie = {"name":request.form["name"], "yearMade":request.form["yearMade"], "director": request.form["director"]}
         dbResponse = db.movies.insert_one(movie)
-        return Response(response=json.dumps({"message":"user creaeted", "id":f"{dbResponse.inserted_id}"}), status=200, mimetype="application/json")
+        return Response(response=json.dumps({"message":"movie creaeted", "id":f"{dbResponse.inserted_id}"}), status=200, mimetype="application/json")
     except Exception as ex:
         print(ex)
-        return Response(response=json.dumps({"message":"cannot create users"}), status=500, mimetype="application/json")
+        return Response(response=json.dumps({"message":"cannot create movie"}), status=500, mimetype="application/json")
 
 # making route for GET
 @app.route("/movies", methods=["GET"])
@@ -50,6 +50,19 @@ def getMovies():
     except Exception as ex:
         print(ex)
         return Response(response=json.dumps({"message":"cannot read movies"}), status=500, mimetype="application/json")
+
+# making route for DELETE
+@app.route("/movies/<id>", methods=["DELETE"])
+def deleteMovie(id):
+    try:
+        dbResponse = db.movies.delete_one({"_id":ObjectId(id)})
+        if dbResponse.deleted_count == 1:
+            return Response(response=json.dumps({"message":"movie deleted", "id":f"{id}"}), status=200, mimetype="application/json")
+        return Response(response=json.dumps({"message":"movie not existing", "id":f"{id}"}), status=200, mimetype="application/json")
+    except Exception as ex:
+        print(ex)
+        return Response(response=json.dumps({"message":"cannot delete movie"}), status=500, mimetype="application/json")
+
 
 #running app
 if __name__ == "__main__":
