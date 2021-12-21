@@ -28,41 +28,29 @@ SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
 
 app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix = SWAGGER_URL)
 
+# making route for POST
 @app.route("/movies", methods=["POST"])
 def addMovies():
     try:
         movie = {"name":request.form["name"], "yearMade":request.form["yearMade"], "director": request.form["director"]}
         dbResponse = db.movies.insert_one(movie)
-        return Response(
-            response=json.dumps({"message":"user creaeted", "id":f"{dbResponse.inserted_id}"}),
-            status=200,
-            mimetype="application/json"
-        )
+        return Response(response=json.dumps({"message":"user creaeted", "id":f"{dbResponse.inserted_id}"}), status=200, mimetype="application/json")
     except Exception as ex:
-        print(ex) 
+        print(ex)
+        return Response(response=json.dumps({"message":"cannot create users"}), status=500, mimetype="application/json")
 
-@app.route("/delete/<id>")
-def delete(id):
+# making route for GET
+@app.route("/movies", methods=["GET"])
+def getMovies():
     try:
-        db.movies.delete_one({'_id':ObjectId(id)})
-        return redirect('/')
-    except:
-        return 'there was a problem with deleting'
+        data = list(db.movies.find())
+        for movie in data:
+            movie["_id"] = str(movie["_id"]) # changing ObjectID into string 
+        return Response(response=json.dumps(data), status=200, mimetype="application/json")
+    except Exception as ex:
+        print(ex)
+        return Response(response=json.dumps({"message":"cannot read movies"}), status=500, mimetype="application/json")
 
-@app.route('/update/<id>', methods=['GET', 'POST'])
-def update(id):
-    movie_id = db.movies.find_one({"_id": ObjectId(id)})
-    if request.method == "POST":
-        try:
-            db.movies.update_one({"_id": ObjectId(id)}, {"$set":{"name": request.form["movie_content"]}})
-            return redirect('/')
-        except Exception as ex:
-            print(ex)
-            return "there's issue updating task"
-    else:
-        return render_template('update.html', movie=movie_id)
-
-
-
+#running app
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=80, debug=True)
