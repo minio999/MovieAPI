@@ -32,9 +32,8 @@ app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix = SWAGGER_URL)
 @app.route("/movies", methods=["POST"])
 def addMovies():
     try:
-        #movie = {"name":request.form["name"], "yearMade":request.form["yearMade"], "director": request.form["director"]}
         movie = request.get_json()
-        movie['id'] = movie['name'] + movie['yearMade'] + movie['director']
+        movie['id'] = movie['name'] + movie['yearMade'] + movie['director'] # creating id column to get id by name tear made and diractor for example "terminator1984spielberg" if name is terminator, yearMade is 1984 etc
         dbResponse = db.movies.insert_one(movie)
         return Response(response=json.dumps({"message":"movie creaeted", "id":f"{dbResponse.inserted_id}"}), status=200, mimetype="application/json")
     except Exception as ex:
@@ -58,7 +57,7 @@ def getMovies():
 def deleteMovie(id):
     try:
         dbResponse = db.movies.delete_one({"id":id})
-        if dbResponse.deleted_count == 1:
+        if dbResponse.deleted_count == 1: # checking if movie was deleted 
             return Response(response=json.dumps({"message":"movie deleted", "id":f"{id}"}), status=200, mimetype="application/json")
         return Response(response=json.dumps({"message":"movie not existing", "id":f"{id}"}), status=200, mimetype="application/json")
     except Exception as ex:
