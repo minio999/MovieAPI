@@ -1,20 +1,7 @@
 {
-<<<<<<< HEAD
-    "swagger": "2.0",
-    "info": {
-      "description": "Basic Movie Api",
-      "version": "1.0.0",
-      "title": "Movie Api",
-      "license": {
-        "name": "MIT",
-        "url": "https://opensource.org/licenses/MIT"
-      }
-    }
-}
-=======
   "openapi": "3.0.0",
   "info": {
-    "description": "movie api",
+    "description": "Simple Movie Api",
     "version": "1.0.0",
     "title": "Movie API",
     "license": {
@@ -22,191 +9,136 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "servers": [
-    {
-      "url": "/"
-    }
-  ],
-  "tags": [
-    {
-      "name": "Movie API",
-      "description": "Simple Movie API"
-    }
-  ],
-  "paths": {
-    "/request": {
-      "get": {
-        "tags": [
-          "Book Request"
-        ],
-        "summary": "Returns bookRequests",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/components/schemas/bookRequests"
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Book Request"
-        ],
-        "summary": "Create a new book request system",
-        "requestBody": {
-          "description": "Book Request Post Object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/bookRequestPostBody"
-              }
-            }
-          }
-        },
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "201": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/components/schemas/id"
-            }
-          },
-          "400": {
-            "description": "Failed. Bad post data."
-          }
-        }
-      }
-    },
-    "/request/{id}": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "ID of the cat that we want to match",
-          "type": "string"
-        }
-      ],
-      "get": {
-        "tags": [
-          "Book Request"
-        ],
-        "summary": "Get book request with given ID",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Book Request id",
-            "schema": {
-              "$ref": "#/components/schemas/id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/components/schemas/bookRequest"
-            }
-          },
-          "400": {
-            "description": "Failed. Misunderstood Request."
-          },
-          "404": {
-            "description": "Failed. Book request not found."
-          }
-        }
-      },
-      "put": {
-        "summary": "edit a book request by ID",
-        "tags": [
-          "Book Request"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Book Request id",
-            "schema": {
-              "$ref": "#/components/schemas/id"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Book Request Object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/bookRequest"
-              }
-            }
-          }
-        },
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/components/schemas/bookRequest"
-            }
-          },
-          "400": {
-            "description": "Failed. Bad post data."
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete Book Request by ID",
-        "tags": [
-          "Book Request"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Book Request Id",
-            "schema": {
-              "$ref": "#/components/schemas/id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/components/schemas/_id"
-            }
-          },
-          "400": {
-            "description": "Failed. Misunderstood Request."
-          },
-          "404": {
-            "description": "Failed. Book Request not found."
-          }
-        }
-      }
-    }
-  },
+
+
+
+  "tags": [{
+    "name": "Products API",
+    "description": "Test API"
+  }],
+
+
+  "servers": [{
+    "url": "/"
+  }],
+
+
   "components": {
     "schemas": {
-      "id": {
+      "MovieList": {
+        "type": "object",
         "properties": {
-          "_id": {
+          "name": {
+            "type": "string"
+          },
+          "yearMade": {
+            "type": "string"
+          },
+          "director": {
+            "type": "string"
+          }
+        }
+      },
+      "_Id": {
+        "type": "ObjectId",
+        "properties": {
+          "name": {
             "type": "ObjectId"
           }
         }
       }
     }
+  },
+
+    "paths": {
+      "/movies": {
+        "post": {
+          "tags": [
+            "Add Movie to API"
+          ],
+          "summary": "Add Movie",
+          "requestBody": {
+            "description": "Post New Movie To Database",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieList"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/MovieList"
+              }
+            },
+            "500": {
+              "description": "NOT FOUND",
+              "schema": {
+                "$ref": "#/components/schemas/MovieList"
+              }
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "Get All Movies from API"
+          ],
+          "summary": "Get All Movies",
+
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/MovieList"
+              }
+            },
+            "500": {
+              "description": "NOT FOUND",
+              "schema": {
+                "$ref": "#/components/schemas/MovieList"
+              }
+            }
+          }
+        }
+      },
+
+
+      "/movies/{ObjectId}": {
+        "delete": {
+          "tags": [
+            "Delete Movie from API"
+          ],
+          "parameters": [{
+            "name": "_id",
+            "in": "path",
+            "description": "product _id to delete",
+            "required": true,
+            "type": "ObjectId",
+            "schema": {
+              "$ref": "#/components/schemas/_Id"
+            }
+          }],
+          "summary": "Delete Movie",
+
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/MovieList"
+              }
+            },
+            "500": {
+              "description": "NOT FOUND",
+              "schema": {
+                "$ref": "#/components/schemas/MovieList"
+              }
+            }
+          }
+        }
+      }
+    }
   }
-}
->>>>>>> refactoring
