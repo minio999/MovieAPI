@@ -34,6 +34,7 @@ def addMovies():
     try:
         #movie = {"name":request.form["name"], "yearMade":request.form["yearMade"], "director": request.form["director"]}
         movie = request.get_json()
+        movie['id'] = movie['name'] + movie['yearMade'] + movie['director']
         dbResponse = db.movies.insert_one(movie)
         return Response(response=json.dumps({"message":"movie creaeted", "id":f"{dbResponse.inserted_id}"}), status=200, mimetype="application/json")
     except Exception as ex:
@@ -56,7 +57,7 @@ def getMovies():
 @app.route("/movies/<id>", methods=["DELETE"])
 def deleteMovie(id):
     try:
-        dbResponse = db.movies.delete_one({"_id":ObjectId(id)})
+        dbResponse = db.movies.delete_one({"id":id})
         if dbResponse.deleted_count == 1:
             return Response(response=json.dumps({"message":"movie deleted", "id":f"{id}"}), status=200, mimetype="application/json")
         return Response(response=json.dumps({"message":"movie not existing", "id":f"{id}"}), status=200, mimetype="application/json")

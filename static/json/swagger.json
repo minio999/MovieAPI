@@ -39,11 +39,11 @@
           }
         }
       },
-      "_Id": {
-        "type": "ObjectId",
+      "Id": {
+        "type": "string",
         "properties": {
           "name": {
-            "type": "ObjectId"
+            "type": "string"
           }
         }
       }
@@ -107,19 +107,19 @@
       },
 
 
-      "/movies/{ObjectId}": {
+      "/movies/{id}": {
         "delete": {
           "tags": [
             "Delete Movie from API"
           ],
           "parameters": [{
-            "name": "_id",
+            "name": "id",
             "in": "path",
-            "description": "product _id to delete",
+            "description": "product id to delete",
             "required": true,
-            "type": "ObjectId",
+            "type": "String",
             "schema": {
-              "$ref": "#/components/schemas/_Id"
+              "$ref": "#/components/schemas/Id"
             }
           }],
           "summary": "Delete Movie",
