@@ -32,7 +32,8 @@ app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix = SWAGGER_URL)
 @app.route("/movies", methods=["POST"])
 def addMovies():
     try:
-        movie = {"name":request.form["name"], "yearMade":request.form["yearMade"], "director": request.form["director"]}
+        #movie = {"name":request.form["name"], "yearMade":request.form["yearMade"], "director": request.form["director"]}
+        movie = request.get_json()
         dbResponse = db.movies.insert_one(movie)
         return Response(response=json.dumps({"message":"movie creaeted", "id":f"{dbResponse.inserted_id}"}), status=200, mimetype="application/json")
     except Exception as ex:
