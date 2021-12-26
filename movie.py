@@ -9,7 +9,7 @@ class Movie:
     # initializing connection with mongo 
     def __init__(self):
         try:
-            mongo = pymongo.MongoClient(host='movie_db', port=27017, username='root', password='pass')
+            mongo = pymongo.MongoClient(host='test_mongodb', port=27017, username='root', password='pass')
             mongo.server_info() # trigger exception if not connected to db
             global db 
             db = mongo.Movie
