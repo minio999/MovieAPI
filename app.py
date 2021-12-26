@@ -4,12 +4,13 @@ from bson.objectid import ObjectId
 from flask_swagger_ui import get_swaggerui_blueprint
 import json
 
+
 app = Flask(__name__)
 
 
 # connecting to mongo client
 try:
-    mongo = pymongo.MongoClient(host="localhost", port=27017, serverSelectionTimeoutMS=1000)
+    mongo = pymongo.MongoClient(host='test_mongodb', port=27017, username='root', password='pass')
     mongo.server_info() # trigger exception if not connected to db
     db = mongo.Movie
 except: 
@@ -27,6 +28,10 @@ SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
 )
 
 app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix = SWAGGER_URL)
+# debug purpose
+@app.route("/")
+def hello_world():
+    return "<p>Hello, World!</p>"
 
 # making route for POST
 @app.route("/movies", methods=["POST"])
@@ -67,4 +72,4 @@ def deleteMovie(id):
 
 #running app
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=80, debug=True)
+    app.run(debug=True)
