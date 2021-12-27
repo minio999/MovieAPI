@@ -1,19 +1,15 @@
-<<<<<<< HEAD
-from movie import * 
-import swagger
-=======
 from flask import Flask, request, Response
 import pymongo
-from bson.objectid import ObjectId
 from flask_swagger_ui import get_swaggerui_blueprint
 import json
+
 
 app = Flask(__name__)
 
 
 # connecting to mongo client
 try:
-    mongo = pymongo.MongoClient(host="localhost", port=27017, serverSelectionTimeoutMS=1000)
+    mongo = pymongo.MongoClient(host='test_mongodb', port=27017, username='root', password='pass')
     mongo.server_info() # trigger exception if not connected to db
     db = mongo.Movie
 except: 
@@ -31,14 +27,17 @@ SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
 )
 
 app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix = SWAGGER_URL)
+# debug purpose
+@app.route("/")
+def hello_world():
+    return "<p>Hello, World!</p>"
 
 # making route for POST
 @app.route("/movies", methods=["POST"])
 def addMovies():
     try:
-        #movie = {"name":request.form["name"], "yearMade":request.form["yearMade"], "director": request.form["director"]}
         movie = request.get_json()
-        movie['id'] = movie['name'] + movie['yearMade'] + movie['director']
+        movie['id'] = movie['name'] + movie['yearMade'] + movie['director'] # creating id column to get id by name tear made and diractor for example "terminator1984spielberg" if name is terminator, yearMade is 1984 etc
         dbResponse = db.movies.insert_one(movie)
         return Response(response=json.dumps({"message":"movie creaeted", "id":f"{dbResponse.inserted_id}"}), status=200, mimetype="application/json")
     except Exception as ex:
@@ -62,21 +61,12 @@ def getMovies():
 def deleteMovie(id):
     try:
         dbResponse = db.movies.delete_one({"id":id})
-        if dbResponse.deleted_count == 1:
+        if dbResponse.deleted_count == 1: # checking if movie was deleted 
             return Response(response=json.dumps({"message":"movie deleted", "id":f"{id}"}), status=200, mimetype="application/json")
         return Response(response=json.dumps({"message":"movie not existing", "id":f"{id}"}), status=200, mimetype="application/json")
     except Exception as ex:
         print(ex)
         return Response(response=json.dumps({"message":"cannot delete movie"}), status=500, mimetype="application/json")
->>>>>>> parent of 1d23d2c... Merge pull request #1 from minio999/dev
-
-swagger()
-Movie()
-
 #running app
 if __name__ == "__main__":
-<<<<<<< HEAD
-    Movie.app.run(debug=True)
-=======
-    app.run(host='127.0.0.1', port=80, debug=True)
->>>>>>> parent of 1d23d2c... Merge pull request #1 from minio999/dev
+    app.run(debug=True)
