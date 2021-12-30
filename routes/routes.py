@@ -1,5 +1,4 @@
 from app import app
-import pymongo
 import json
 from flask import request, Response
 from database.datebase import *
