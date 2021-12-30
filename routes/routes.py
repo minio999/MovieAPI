@@ -2,15 +2,10 @@ from app import app
 import pymongo
 import json
 from flask import request, Response
+from database.datebase import *
 
-
-try:
-    mongo = pymongo.MongoClient(host='test_mongodb', port=27017, username='root', password='pass')
-    mongo.server_info() # trigger exception if not connected to db
-    db = mongo.Movie
-except:
-    print("ERROR - Cannot connect to db")
-
+data = database()
+db = data.db
 
 @app.route("/movies", methods=["POST"])
 def add_movies():
