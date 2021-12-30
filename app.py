@@ -1,11 +1,10 @@
 from flask import Flask
 import pymongo
 from flask_swagger_ui import get_swaggerui_blueprint
-import app.movie_mod 
 
 
 app = Flask(__name__)
-
+import movie_mod
 
 # connecting to mongo client
 try:
